@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KnowledgeBot Enterprise</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -27,15 +29,15 @@
         }
       }
     </script>
-    <!-- PDF.js worker script for text extraction -->
+
+    <!-- Document Processing Libraries (Required for PDF and Word processing) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
       // Configure PDF.js worker
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
-    <!-- Mammoth for .docx extraction -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script type="importmap">
+  <script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.0",
@@ -50,9 +52,8 @@
 }
 </script>
 </head>
-  <body class="bg-slate-50 text-slate-900 antialiased overflow-hidden">
+  <body>
     <div id="root"></div>
-    <!-- Main entry point for Vite -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
