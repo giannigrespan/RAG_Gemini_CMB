@@ -1,0 +1,5 @@
+{
+  "name": "CMB KnowledgeBot Enterprise",
+  "description": "An intelligent chatbot for colleagues that builds its knowledge base from uploaded PDF and Word documents. Features local browser-based file synchronization simulation and context-aware answers using Gemini 2.5 Flash.",
+  "requestFramePermissions": []
+}
