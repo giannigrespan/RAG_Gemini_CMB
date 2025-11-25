@@ -8,9 +8,16 @@ import { Message, KnowledgeDocument, ChatState } from './types';
 import { AlertCircle, CheckCircle2, Lock, X, Eye, EyeOff } from 'lucide-react';
 
 // Configuration
-// BEST PRACTICE: Imposta una variabile d'ambiente chiamata ADMIN_PASSWORD nel tuo sistema di hosting (es. Vercel, Netlify, o .env locale).
-// Se non viene trovata, la password di default sarà 'admin'.
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'; 
+// Supporta diverse convenzioni di variabili d'ambiente (Standard, Create-React-App, Vite)
+const getAdminPassword = () => {
+  return process.env.ADMIN_PASSWORD || 
+         process.env.REACT_APP_ADMIN_PASSWORD || 
+         // @ts-ignore - check for Vite env
+         (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_ADMIN_PASSWORD : undefined) ||
+         'admin';
+};
+
+const ADMIN_PASSWORD = getAdminPassword();
 
 export default function App() {
   const [documents, setDocuments] = useState<KnowledgeDocument[]>([]);
@@ -202,12 +209,12 @@ export default function App() {
       <main className="flex-1 flex flex-col relative h-full transition-all duration-300">
         
         {/* Header */}
-        <header className="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-6 z-10 shrink-0">
+        <header className="h-16 border-b border-slate-200 bg-white flex items-center justify-center md:justify-between px-6 z-10 shrink-0">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-semibold text-slate-800 tracking-tight">Assistente Colleghi</h1>
             {isAdmin && <span className="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full font-medium">Admin Mode</span>}
           </div>
-          <div className="flex items-center gap-4 text-sm text-slate-500">
+          <div className="hidden md:flex items-center gap-4 text-sm text-slate-500">
             {isProcessing && (
               <span className="flex items-center gap-2 text-amber-600 animate-pulse">
                 <AlertCircle className="w-4 h-4" />
@@ -225,7 +232,7 @@ export default function App() {
 
         <div className="flex-1 flex overflow-hidden">
             {/* Chat Area */}
-            <div className={`flex-1 flex flex-col h-full relative ${showManager ? 'w-2/3' : 'w-full'}`}>
+            <div className={`flex-1 flex flex-col h-full relative transition-all duration-300 ${showManager && isAdmin ? 'w-full md:w-2/3' : 'w-full'}`}>
                 <ChatInterface 
                     messages={chatState.messages}
                     isLoading={chatState.isLoading}
@@ -237,7 +244,7 @@ export default function App() {
 
             {/* Knowledge Manager Slide-over - Only render if visible (controlled by admin) */}
             {showManager && isAdmin && (
-                <div className="w-96 border-l border-slate-200 bg-slate-50 h-full flex flex-col shadow-xl z-20 transition-all duration-300 ease-in-out">
+                <div className="absolute inset-0 md:static w-full md:w-96 border-l border-slate-200 bg-slate-50 h-full flex flex-col shadow-xl z-20 transition-all duration-300 ease-in-out">
                     <KnowledgeBaseManager 
                         documents={documents}
                         onFilesSelected={handleFilesSelected}
@@ -293,7 +300,7 @@ export default function App() {
 
                 {loginError && (
                   <p className="text-xs text-red-500 mt-2 font-medium flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" /> Password non valida
+                    <AlertCircle className="w-3 h-3" /> Password errata
                   </p>
                 )}
               </div>

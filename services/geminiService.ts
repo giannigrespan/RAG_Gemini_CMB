@@ -2,10 +2,15 @@ import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { Message } from '../types';
 
 const getGeminiClient = () => {
-    const apiKey = process.env.API_KEY;
+    // Supporta diverse convenzioni per le variabili d'ambiente
+    const apiKey = process.env.API_KEY || 
+                   process.env.REACT_APP_API_KEY || 
+                   // @ts-ignore - check for Vite env
+                   (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_API_KEY : undefined);
+
     if (!apiKey) {
         console.error("API_KEY is missing from environment variables");
-        throw new Error("API Key mancante. Verifica la configurazione.");
+        throw new Error("API Key mancante. Verifica la configurazione (.env, Vercel, Netlify).");
     }
     return new GoogleGenAI({ apiKey });
 };
