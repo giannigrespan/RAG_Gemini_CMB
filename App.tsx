@@ -14,7 +14,7 @@ const getAdminPassword = () => {
          process.env.REACT_APP_ADMIN_PASSWORD || 
          // @ts-ignore - check for Vite env
          (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_ADMIN_PASSWORD : undefined) ||
-         'admin';
+         'GianniCMB';
 };
 
 const ADMIN_PASSWORD = getAdminPassword();
